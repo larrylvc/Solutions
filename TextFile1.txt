@@ -20,3 +20,7 @@ Push an existing repository from the command line
 
 git remote add origin https://github.com/larrylvc/Solution1.git
 git push -u origin master
+
+push from local side:
+git add -A
+git commit -a
