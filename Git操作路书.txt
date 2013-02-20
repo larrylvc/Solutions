@@ -1,0 +1,157 @@
+
+
+
+
+
+用惯了图形界面再返回用命令行挺不习惯，感觉又回到了10几年前玩DOS系统的时候。折腾两天基本搞会了Git的基本操作
+
+
+
+Windows PowerShell
+版权所有 (C) 2009 Microsoft Corporation。保留所有权利。
+
+
+
+D:\Github [master]> cd solutions
+D:\Github\solutions [master]> ls
+
+
+    目录: D:\Github\solutions          【新建了一个Solutions目录，含有一个txt文件】
+
+
+Mode                LastWriteTime     Length Name
+----                -------------     ------ ----
+-a---   2013/2/20 星期三     20:5        391 TextFile1.txt
+                                6
+
+
+
+D:\Github\solutions> cd..
+D:\Github> git status
+fatal: Not a git repository (or any of the parent directories): .git        【上级目录不是git 仓库】
+D:\Github> cd solutions
+D:\Github\solutions> git status
+fatal: Not a git repository (or any of the parent directories): .git		【Solutions目录目前也不是git 仓库】
+D:\Github\solutions> git init												【初始化当前Solutions目录为git 版本控制仓库】
+Initialized empty Git repository in D:/Github/solutions/.git/				【初始化后，自动创建了.git目录，linux下是隐藏的】
+D:\Github\solutions [master +1 ~0 -0 !]> ls
+
+
+    目录: D:\Github\solutions
+
+
+Mode                LastWriteTime     Length Name
+----                -------------     ------ ----
+-a---   2013/2/20 星期三     20:5        391 TextFile1.txt
+                                6
+
+
+D:\Github\solutions [master +1 ~0 -0 !]> git config user.name          【显示当前Git的账户名，还有一个是user.email参数必须事先配置好，可用命令行配置也可以用Github的GUI和VS2012的Git插件】
+larrylvc
+
+
+D:\Github\solutions [master +1 ~0 -0 !]> git commit -a				【试图commit所有untracked文件，Git缓存中没有数据所以失败】
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       Solutions.sln
+#       Solutions.v11.suo
+#       TextFile1.txt
+nothing added to commit but untracked files present (use "git add" to track) 
+
+D:\Github\solutions [master +3 ~0 -0 !]> git add -A					【把所有untracked文件加入commit缓存】
+D:\Github\solutions [master +3 ~0 -0]> git commit -a				【commit成功，注意这是在本地仓库完成的。】
+[master (root-commit) d7f8091] rename and push from local side.
+ 3 files changed, 30 insertions(+)
+ create mode 100644 Solutions.sln
+ create mode 100644 Solutions.v11.suo
+ create mode 100644 TextFile1.txt
+D:\Github\solutions [master]> git push						【因为本地Solutions目录并未和Github上面建立连接，所以失败】
+fatal: The current branch master has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin master					【-u 参数就等于--set-upstream】
+
+
+
+D:\Github\solutions [master +0 ~1 -0]> git pull			【试着拉一把数据，提示no tracking information，因为与远端未建立起连接】
+warning: no common commits
+remote: Counting objects: 9, done.
+remote: Compressing objects: 100% (7/7), done.
+remote: Total 9 (delta 0), reused 9 (delta 0)
+Unpacking objects: 100% (9/9), done.
+From https://github.com/larrylvc/Solutions
+ * [new branch]      master     -> origin/master
+There is no tracking information for the current branch.
+Please specify which branch you want to merge with.
+See git-pull(1) for details
+
+    git pull <remote> <branch>
+
+If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream master origin/<branch>
+
+
+D:\Github\solutions [master +0 ~1 -0]> git branch -u origin/master master    【本地这个master branch与远端origin/master建立起连接】
+Branch master set up to track remote branch master from origin.
+D:\Github\solutions [master +0 ~1 -0]> git pull -u							【试着再拉一把，-u参数可能已经不需要了。merge时出现conflict】
+Auto-merging TextFile1.txt
+CONFLICT (add/add): Merge conflict in TextFile1.txt
+Automatic merge failed; fix conflicts and then commit the result.
+D:\Github\solutions [master +5 ~0 -0 | +1 ~1 -0 !]> git mergetool		【貌似是自动进行merge，但是失败了。】
+Merging:
+TextFile1.txt
+
+Normal merge conflict for 'TextFile1.txt':
+  {local}: created file
+  {remote}: created file
+/libexec/git-core/git-mergetool--lib: line 141: c:/program files (x86)/beyond co
+mpare 3/bcomp.exe: No such file or directory
+merge of TextFile1.txt failed
+D:\Github\solutions [master +5 ~0 -0 | +1 ~1 -0 !]> git merge			【不死心，输入merge命令看看，还不行】
+error: 'merge' is not possible because you have unmerged files.
+hint: Fix them up in the work tree,
+hint: and then use 'git add/rm <file>' as
+hint: appropriate to mark resolution and make a commit,
+hint: or use 'git commit -a'.
+fatal: Exiting because of an unresolved conflict.
+D:\Github\solutions [master +5 ~0 -0 | +1 ~1 -0 !]> git add TextFile1.txt   【不同之处会显示在TextFile1文件中，在VS2012中手动解决conflict并删掉多余的分隔符号后，重新commit】
+D:\Github\solutions [master +4 ~1 -0 | +0 ~1 -0]> git commit -m "fix conflict"		【commit一把，貌似Git已识别conflict解决了】
+[master e99be31] fix conflict
+D:\Github\solutions [master +0 ~1 -0]> git push					【再push到github上去，ok了。】
+Counting objects: 15, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (13/13), done.
+Writing objects: 100% (13/13), 3.39 KiB, done.
+Total 13 (delta 4), reused 0 (delta 0)
+To https://github.com/larrylvc/Solutions.git
+   8f9b7ae..e99be31  master -> master
+D:\Github\solutions [master +0 ~1 -0]>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
