@@ -136,7 +136,84 @@ D:\Github\solutions [master +0 ~1 -0]>
 
 
 
-
+D:\Github\solutions [master +1 ~1 -0 !]> git status
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#       modified:   Solutions.v11.suo
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       forRemove.txt
+no changes added to commit (use "git add" and/or "git commit -a")
+D:\Github\solutions [master +1 ~1 -0 !]> git add .			【新建了个forRemove.txt文件，将所有文件加入缓存中。】
+D:\Github\solutions [master +1 ~1 -0]> git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#       modified:   Solutions.v11.suo
+#       new file:   forRemove.txt
+#
+D:\Github\solutions [master +1 ~1 -0]> git rm --cached forRemove.txt   【从缓存中移除了forRemove.txt文件。】
+rm 'forRemove.txt'
+D:\Github\solutions [master +0 ~1 -0 | +1 ~0 -0 !]> git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#       modified:   Solutions.v11.suo
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       forRemove.txt
+D:\Github\solutions [master +0 ~1 -0 | +1 ~0 -0 !]> git add .		【重新将所有文件加入缓存中。】
+D:\Github\solutions [master +1 ~1 -0]> git commit -am "test remove file"  【将新文件commit】
+[master 50b725c] test remove file
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 forRemove.txt
+D:\Github\solutions [master]> git status
+# On branch master
+# Your branch is ahead of 'origin/master' by 1 commit.
+#
+nothing to commit, working directory clean
+D:\Github\solutions [master]> git push					
+Counting objects: 5, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 928 bytes, done.
+Total 3 (delta 2), reused 0 (delta 0)
+To https://github.com/larrylvc/Solutions.git
+   8678f1c..50b725c  master -> master
+D:\Github\solutions [master]> git status
+# On branch master
+nothing to commit, working directory clean
+D:\Github\solutions [master]> git rm forRemove.txt		【从本地移除了forRemove.txt文件】
+rm 'forRemove.txt'
+D:\Github\solutions [master +0 ~0 -1]> git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#       deleted:    forRemove.txt
+#
+D:\Github\solutions [master +0 ~0 -1]> git commit -am "forRemove.txt removed"	【确认提交】
+[master 7261f27] forRemove.txt removed
+ 0 files changed
+ delete mode 100644 forRemove.txt
+D:\Github\solutions [master]> git push				【提交到服务器，文件forRemove.txt彻底被删除】
+Counting objects: 3, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 229 bytes, done.
+Total 2 (delta 1), reused 0 (delta 0)
+To https://github.com/larrylvc/Solutions.git
+   50b725c..7261f27  master -> master
+D:\Github\solutions [master]>
 
 
 
